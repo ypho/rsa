@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>RSA Playground</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card rsa-card">
+                <div class="card-header">RSA Playground</div>
+                <div class="card-body">
+                    <p>This small project is able to generate an RSA key pair from two prime numbers (p and q). When
+                        a key pair is generated, the public key can be used to encrypt a message, and the private key
+                        can be used to decrypt the encrypted message.</p>
+                    <div class="alert alert-danger" role="alert">WARNING: Never use this in a production environment
+                        or for any purpose other than demonstrating the working of encryption/decryption.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <!-- Generate key pair-->
+        <div class="col-lg-4">
+            <div class="card rsa-card">
+                <div class="card-header">Generate key pair</div>
+                <div class="card-body">
+                    <form id="generate-keys-form">
+                        <input name="action" type="hidden" value="generate_keypair">
+
+                        <div class='form-group'>
+                            <label for='p'>Value for p</label>
+                            <input class='form-control' type='text' name='p' id='p'>
+                            <small id="pHelp" class="form-text text-muted">Pick a prime number between 10 and 100 (e.g. 11)</small>
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='q'>Value for q</label>
+                            <input class='form-control' type='text' name='q' id='q'>
+                            <small id="qHelp" class="form-text text-muted">Pick a prime number between 10 and 100 (e.g. 17)</small>
+                        </div>
+
+                        <button id="randomize" class="btn btn-sm btn-warning" type="button"><i class="fa fa-random" aria-hidden="true"></i> Randomize</button>
+                        <button id="generate-keys" class="btn btn-sm btn-primary float-right" type="button"><i class="fa fa-key" aria-hidden="true"></i> Make keys</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-2">
+                <div class="card-body">
+                    <h5 class="card-title">Response</h5>
+                    <div id="result-keypair"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Encrypt message -->
+        <div class="col-lg-4 ">
+            <div class="card">
+                <div class="card-header">Encrypt message</div>
+                <div class="card-body">
+                    <form id="encrypt-message-form">
+                        <input name="action" type="hidden" value="encrypt_message">
+
+                        <div class='form-group'>
+                            <label for='pubkey'>Public Key</label>
+                            <input class='form-control' type='text' name='pubkey' id='pubkey'>
+                            <small id="pubkeyHelp" class="form-text text-muted">Enter your public key: {e, N}</small>
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='msgToEncrypt'>Message to encrypt</label>
+                            <input class='form-control' type='text' name='message_to_encrypt' id='msgToEncrypt'>
+                            <small id="msgToEncryptHelp" class="form-text text-muted">Text you want to encrypt</small>
+                        </div>
+
+                        <button id="encrypt-message" class="btn btn-sm btn-success float-right" type="button"><i class="fa fa-lock" aria-hidden="true"></i> Encrypt</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-2">
+                <div class="card-body">
+                    <h5 class="card-title">Response</h5>
+                    <div id="result-encrypt"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decrypt message -->
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">Decrypt message</div>
+                <div class="card-body">
+                    <form id="decrypt-message-form">
+                        <input name="action" type="hidden" value="decrypt_message">
+
+                        <div class='form-group'>
+                            <label for='privkey'>Private Key</label>
+                            <input class='form-control' type='text' name='privkey' id='privkey'>
+                            <small id="privkeyHelp" class="form-text text-muted">Enter your private key: {d, N}</small>
+                        </div>
+
+                        <div class='form-group'>
+                            <label for='msgToDecrypt'>Message to decrypt</label>
+                            <input class='form-control' type='text' name='message_to_decrypt' id='msgToDecrypt'>
+                            <small id="msgToDecryptHelp" class="form-text text-muted">Encrypted message to decrypt</small>
+                        </div>
+
+                        <button id="decrypt-message" class="btn btn-sm btn-danger float-right" type="button"><i class="fa fa-unlock" aria-hidden="true"></i> Decrypt</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-2">
+                <div class="card-body">
+                    <h5 class="card-title">Response</h5>
+                    <div id="result-decrypt"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">About</div>
+                <div class="card-body">
+                    <p><i class="fa fa-home" aria-hidden="true"></i> <a href="https://ypho.nl" target="_blank">https://ypho.nl</a></p>
+                    <p><i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/ypho/rsa" target="_blank">https://github.com/ypho/rsa</a></p>
+                    <p><i class="fa fa-btc" aria-hidden="true"></i> 3J9QcmtbgXDW34WUhnW2NCp9qDok2GVMHF</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Randomize p and q
+        $('#randomize').on('click', function (e) {
+            // Primes between 10 and 100
+            let primes = [11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97];
+
+            // Copy array for p, then pick random for p
+            let p = primes[Math.floor(Math.random() * primes.length)];
+
+            // Remove p from array, then pick random for q
+            primes = primes.filter(item => item !== p);
+            let q = primes[Math.floor(Math.random() * primes.length)];
+
+            // Fill p and q
+            $('#p').val(p);
+            $('#q').val(q);
+        });
+
+        // Generating keys
+        $('#generate-keys').on('click', function (e) {
+            $.ajax({
+                method: 'POST',
+                url: '/actions.php',
+                data: $('#generate-keys-form').serialize(),
+                success: function (response) {
+                    // Show result
+                    $('#result-keypair').html(
+                        '<div class="alert alert-success" role="alert"> ' + 'Public key (e,N): {' + response.keys.public.e + ', ' + response.keys.public.N + '}</div>' +
+                        '<div class="alert alert-success" role="alert"> ' + 'Private key (d,N): {' + response.keys.private.d + ', ' + response.keys.private.N + '}</div>');
+
+                    // Prefill message
+                    $('#pubkey').val('{' + response.keys.public.e + ', ' + response.keys.public.N + '}');
+                    $('#privkey').val('{' + response.keys.private.d + ', ' + response.keys.private.N + '}');
+                },
+                error: function (response) {
+                    //console.log(response);
+                    $('#result-keypair').html('<div class="alert alert-danger" role="alert">' + response.responseJSON.error + '</div>');
+                }
+            });
+        });
+
+        // Encrypting message
+        $('#encrypt-message').on('click', function (e) {
+            $.ajax({
+                method: 'POST',
+                url: '/actions.php',
+                data: $('#encrypt-message-form').serialize(),
+                success: function (response) {
+                    // Show result
+                    $('#result-encrypt').html('<div class="alert alert-success" role="alert"> ' + 'Encrypted message: {' + response.encrypted_message + '}</div>');
+
+                    // Prefill message
+                    $('#msgToDecrypt').val(response.encrypted_message);
+                },
+                error: function (response) {
+                    $('#result-encrypt').html('<div class="alert alert-danger" role="alert">' + response.responseJSON.error + '</div>');
+                }
+            });
+        });
+
+        // Decrypting message
+        $('#decrypt-message').on('click', function (e) {
+            $.ajax({
+                method: 'POST',
+                url: '/actions.php',
+                data: $('#decrypt-message-form').serialize(),
+                success: function (response) {
+                    // Show result
+                    $('#result-decrypt').html(
+                        '<div class="alert alert-success" role="alert"> ' + 'Decrypted message: ' + response.decrypted_message + '</div>');
+                },
+                error: function (response) {
+                    $('#result-decrypt').html('<div class="alert alert-danger" role="alert">' + response.responseJSON.error + '</div>');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

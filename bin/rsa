@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "local-php" ]; then
+  php -S localhost:8085 --docroot=app/web
+  exit 0
+fi
+
+if [ "$1" == "up" ]; then
+  docker-compose up $2 $3
+  exit 0
+fi
+
+if [ "$1" == "down" ]; then
+  docker-compose down
+  exit 0
+fi
+
+if [ "$1" == "setup" ]; then
+  docker exec -ti rsa-php bash -c "composer install"
+  exit 0
+fi
+
+if [ "$1" == "test" ]; then
+    docker exec -ti rsa-php bash -c "vendor/bin/phpunit"
+    exit 0
+fi;

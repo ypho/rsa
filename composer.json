@@ -1,0 +1,29 @@
+{
+    "name": "ypho/rsa",
+    "description": "Playground for working with the RSA algorithm.",
+    "type": "project",
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "ext-bcmath": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5.0"
+    },
+    "authors": [
+        {
+            "name": "Ivo Geersen",
+            "email": "ivo@ypho.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ypho\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Unit\\": "tests/unit"
+        }
+    }
+}
