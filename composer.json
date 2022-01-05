@@ -14,7 +14,9 @@
     "authors": [
         {
             "name": "Ivo Geersen",
-            "email": "ivo@ypho.nl"
+            "email": "ivo@ypho.nl",
+            "homepage": "https://ypho.nl",
+            "role": "Developer"
         }
     ],
     "autoload": {
@@ -26,5 +28,8 @@
         "psr-4": {
             "Tests\\Unit\\": "tests/unit"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }
