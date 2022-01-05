@@ -2,7 +2,7 @@
     "name": "ypho/rsa",
     "description": "Playground for working with the RSA algorithm.",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "require": {
         "php": "^7.4|^8.0",
         "ext-json": "*",
